@@ -1,0 +1,107 @@
+```{r setup, include=FALSE, echo=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(reticulate)
+use_python("/usr/local/bin/python3")
+```
+
+#Access id
+```{r}
+getCredentials <- function(file_path) {
+  credentials <- read.table(file_path, sep = "=", stringsAsFactors = FALSE, strip.white = TRUE)
+  credentials_list <- as.list(setNames(credentials$V2, credentials$V1))
+  return(credentials_list)
+}
+
+file_path <- "../API_Keys.txt"
+credentials <- getCredentials(file_path)
+
+# Access clientID and secret
+clientID <- credentials$clientID
+secret <- credentials$secret
+
+
+response = POST(
+  'https://accounts.spotify.com/api/token',
+  accept_json(),
+  authenticate(clientID, secret),
+  body = list(grant_type = 'client_credentials'),
+  encode = 'form',
+  verbose()
+)
+
+mytoken = content(response)$access_token
+HeaderValue = paste0('Bearer ', mytoken)
+```
+
+# show details
+```{r}
+showID = "76h8fh9KK3boiMrQ340lV4"
+market='US'
+URI = paste0('https://api.spotify.com/v1/shows/', showID,"?&market=",market)
+response2 = GET(url = URI, add_headers(Authorization = HeaderValue))
+Show = content(response2)
+counter=Show$total_episodes
+```
+#episode details
+```{r}
+#Show
+id=character(counter)
+
+offset=0
+Show$episodes$items[[1]]$id
+while(offset<Show$total_episodes){
+  URI = paste0('https://api.spotify.com/v1/shows/', showID,'/episodes',
+               "?&market=",market,
+               "&offset=",offset)
+  response2 = GET(url = URI, add_headers(Authorization = HeaderValue))
+  episodes = content(response2)
+  #print(length(episodes$items))
+  for(i in 1:length(episodes$items)){
+    id[i+offset] = episodes$items[[i]]$id
+  }
+  offset=offset+20
+}
+id[1]
+```
+```{r}
+URIs = paste0('https://api.spotify.com/v1/episodes/',id[1],"?&market=",market)
+response3 = GET(url = URIs, add_headers(Authorization = HeaderValue))
+tracks2 = content(response3)
+
+URIs = paste0('https://api.spotify.com/v1/audio-features/',id[1],"?&market=",market)
+response4 = GET(url = URIs, add_headers(Authorization = HeaderValue))
+tracks3 = content(response4)
+```
+
+```{python}
+import numpy as np
+my_python_array = np.array([2,4,6,8])
+for item in my_python_array:
+    print(item)
+quit()
+```
+
+
+```{r}
+my_r_array <- py$my_python_array
+class(my_r_array)
+```
+
+
+```{r}
+my_r_vector <- as.vector(py$my_python_array)
+class(my_r_vector)
+my_r_vector <- my_r_vector * 2
+```
+
+
+```{python}
+import feedparser
+NewsFeed = feedparser.parse("https://atp.fm/rss")
+entry = NewsFeed.entries[1]
+
+print(entry.keys())
+print(entry['links'])
+print(entry['link'])
+```

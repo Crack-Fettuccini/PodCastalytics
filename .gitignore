@@ -1,0 +1,5 @@
+*.idea
+*.Rhistory
+*__pycache__
+API_Keys.txt
+.DS_Store

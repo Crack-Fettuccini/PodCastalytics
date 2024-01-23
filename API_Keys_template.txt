@@ -1,0 +1,3 @@
+Spotify dev info for data_exploration
+clientID = <Your client ID>
+secret = <Your secret>
