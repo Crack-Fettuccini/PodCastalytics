@@ -1,5 +1,5 @@
 # PodCastalytics
-## _Podcast landscape analytics_
+## _Podcast consumer analysis analytics_
 
 PodCastalytics is a robust data analytics tool designed for new podcasters aiming to understand the current podcast scene. It leverages the data analysis capabilities of R, the code readability of Python, and the speed of C to provide insightful metrics.
 
