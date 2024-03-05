@@ -32,7 +32,7 @@ To customize the podcasts analysed, add or replace the list of _pagelinks_ in `p
 
 ### File System Configuration
 
-Set the `.tempfolder` to a TMPFS or RAMFS filesystem. Frequent rewrites of large data amounts can cause wear on persistent memory. Ensure the file isn't written to a hard drive/SSD.
+Set the `.tempfolder` to a TMPFS or RAMFS filesystem. Frequent rewrites of large data amounts can cause wear on persistent memory. Ensure the file isn't written to a hard drive/SSD to prevent wear.
 
 ## Important Note:
 
